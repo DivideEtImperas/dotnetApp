@@ -18,7 +18,18 @@ namespace SnakeApp
        
             p2.Draw();
 
-           
+           List<int> numList = new List<int>();
+            numList.Add(1);
+            numList.Add(2);
+            numList.Add(3);
+
+            foreach (var item in numList)
+            {
+                Console.Write(item + " ");
+            }
+
+            numList.Remove(0);
+
             Console.ReadKey();
         }
         
