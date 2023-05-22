@@ -26,7 +26,7 @@ namespace SnakeApp
             Point p = new Point(4, 5, '*');
             p.Draw();
 
-           
+           Console.ReadKey();
         }
 
     }
