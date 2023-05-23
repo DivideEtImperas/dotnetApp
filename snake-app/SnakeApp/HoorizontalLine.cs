@@ -18,6 +18,14 @@ namespace SnakeApp
             }
 
         }
+        public override void Draw()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            base.Draw();
+
+            Console.ForegroundColor = ConsoleColor.White;
+        }
 
     }
 }
