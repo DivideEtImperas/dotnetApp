@@ -11,31 +11,64 @@ namespace SnakeApp
     {
         static void Main(string[] args)
         {
-            VerticalLine vl = new VerticalLine(0, 10, 5, '%');
-            Draw(vl);
+            Console.SetBufferSize(80, 25);
 
+            Walls walls = new Walls(80, 25);
+            walls.Draw();
+
+            // Отрисовка точек			
             Point p = new Point(4, 5, '*');
-            Figure fSnake = new Snake(p, 4, Direction.RIGHT);
-            Draw(fSnake);
-            Snake snake = (Snake)fSnake;
+            Snake snake = new Snake(p, 4, Direction.RIGHT);
+            snake.Draw();
 
-            HoorizontalLine hl = new HoorizontalLine(0, 5, 6, '&');
+            FoodCreator foodCreator = new FoodCreator(80, 25, '$');
+            Point food = foodCreator.CreateFood();
+            food.Draw();
 
-            List<Figure> figures = new List<Figure>();
-            figures.Add(fSnake);
-            figures.Add(vl);
-            figures.Add(hl);
-
-            foreach (var f in figures)
+            while (true)
             {
-                f.Draw();
+                if (walls.IsHit(snake) || snake.IsHitTail())
+                {
+                    break;
+                }
+                if (snake.Eat(food))
+                {
+                    food = foodCreator.CreateFood();
+                    food.Draw();
+                }
+                else
+                {
+                    snake.Move();
+                }
+
+                Thread.Sleep(150);
+                if (Console.KeyAvailable)
+                {
+                    ConsoleKeyInfo key = Console.ReadKey();
+                    snake.HandleKey(key.Key);
+                }
             }
-            Console.ReadKey();
+            WriteGameOver();
+            Console.ReadLine();
         }
-        static void Draw (Figure figure)
+
+        static void WriteGameOver()
         {
-            figure.Draw();
+            int xOffset = 25;
+            int yOffset = 8;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.SetCursorPosition(xOffset, yOffset++);
+            WriteText("============================", xOffset, yOffset++);
+            WriteText("И Г Р А    О К О Н Ч Е Н А", xOffset + 1, yOffset++);
+            yOffset++;
+            WriteText("============================", xOffset, yOffset++);
         }
-        
+
+        static void WriteText(String text, int xOffset, int yOffset)
+        {
+            Console.SetCursorPosition(xOffset, yOffset);
+            Console.WriteLine(text);
+        }
+
     }
 }
